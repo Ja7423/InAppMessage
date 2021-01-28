@@ -1,0 +1,106 @@
+//
+//  IAMessagePresenter.swift
+//  InAppMessage
+//
+//  Created by 家瑋 on 2021/1/24.
+//
+
+import Foundation
+
+protocol PresenterEventDelegate: AnyObject {
+    func willShow(_ presenter: IAMessagePresenter)
+    func didShow(_ presenter: IAMessagePresenter)
+    func willHide(_ presenter: IAMessagePresenter)
+    func didHide(_ presenter: IAMessagePresenter)
+}
+
+class IAMessagePresenter: NSObject {
+    
+    weak var delegate: PresenterEventDelegate?
+    
+    let config: IAMessageConfig
+    
+    let animator: IAAnimator
+    
+    private var messageTime: TimeInterval {
+        get {
+            switch config.duration {
+            case .auto:
+                return 5.0
+            case .forever:
+                return 0
+            case .seconds(let seconds):
+                return seconds
+            }
+        }
+    }
+    
+    private var presentationContext: IAMessageContext?
+    
+    private lazy var notifyViewController = IANotifyViewController(config: config)
+    
+    deinit {
+        print("IAMessagePresenter deinit")
+        notifyViewController.destory()
+    }
+    
+    init(config: IAMessageConfig = IAMessageConfig()) {
+        self.config = config
+        self.animator = IAMessagePresenter.getAnimator(config: config)
+        super.init()
+    }
+    
+    static func getAnimator(config: IAMessageConfig) -> IAAnimator {
+        switch config.presentStyle {
+        case .top:
+            return TopBottomAnimator(config: config)
+        case .bottom:
+            return TopBottomAnimator(config: config)
+        default:
+            return TopBottomAnimator(config: config)
+        }
+    }
+    
+    func show(view: IAMessageView) {
+        NSObject.cancelPreviousPerformRequests(withTarget: self)
+        let context = IAMessageContext(container: notifyViewController.view, messageView: view)
+        presentationContext = context
+        
+        notifyViewController.show()
+        
+        // will show
+        delegate?.willShow(self)
+        
+        animator.show(context: context) { [weak self] (completed) in
+            guard let strongSelf = self else { return }
+            
+            // did show
+            strongSelf.delegate?.didShow(strongSelf)
+            
+            // hide
+            if strongSelf.messageTime > 0, completed {
+                strongSelf.perform(#selector(strongSelf.hide),
+                                   with: nil,
+                                   afterDelay: strongSelf.messageTime)
+            }
+        }
+    }
+    
+    @objc func hide() {
+        if let context = presentationContext {
+            NSObject.cancelPreviousPerformRequests(withTarget: self)
+            
+            // will hide
+            delegate?.willHide(self)
+            
+            animator.hide(context: context) { [weak self] (completed) in
+                guard let strongSelf = self else { return }
+                strongSelf.notifyViewController.destory()
+                
+                // did hide
+                strongSelf.delegate?.didHide(strongSelf)
+            }
+        }
+    }
+}
+

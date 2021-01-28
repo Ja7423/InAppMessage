@@ -65,6 +65,10 @@ class IANotifyView: UIView {
         return label
     }()
     
+    deinit {
+        print("IANotifyView deinit")
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initialView()
@@ -89,8 +93,6 @@ class IANotifyView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-//        blurBackground.frame = backgroundView.bounds
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {

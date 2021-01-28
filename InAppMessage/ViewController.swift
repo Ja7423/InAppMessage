@@ -30,18 +30,30 @@ class ViewController: UIViewController {
         titleTextField.resignFirstResponder()
         bodyTextField.resignFirstResponder()
         
-        IAMessageService.show(message())
+        let config = IAMessageConfig(presentStyle: .top, duration: .seconds(2.0))
+        let view = IANotifyView()
+        view.setMessage(message())
+        IAMessageService.show(view, config: config)
     }
     
     @IBAction func sendBottomMessage(_ sender: UIButton) {
         titleTextField.resignFirstResponder()
         bodyTextField.resignFirstResponder()
         
-        IAMessageService.show(message(), at: .bottom)
+        let config = IAMessageConfig(presentStyle: .bottom, duration: .auto)
+        let view = IANotifyView()
+        view.setMessage(message())
+        IAMessageService.show(view, config: config)
     }
     
     @IBAction func presentVC(_ sender: UIButton) {
+        titleTextField.resignFirstResponder()
+        bodyTextField.resignFirstResponder()
         
+        let config = IAMessageConfig(presentStyle: .bottom, duration: .forever)
+        let view = IANotifyView()
+        view.setMessage(message())
+        IAMessageService.show(view, config: config)
     }
     
     private func message() -> IAMessage {
