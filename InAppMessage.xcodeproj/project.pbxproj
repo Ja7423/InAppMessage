@@ -95,11 +95,9 @@
 				A9A757D925BA851A00B62469 /* IAMessageService.swift */,
 				A9B54E2B25BD78E600701541 /* IAMessagePresenter.swift */,
 				A9B54E3225BD884600701541 /* Animator */,
-				A9A757EE25BAD20F00B62469 /* IANotifyWindow.swift */,
-				A9A757DE25BA867900B62469 /* IANotifyViewController.swift */,
-				A9A757E125BA899800B62469 /* IAMessage.swift */,
-				A9B5C9C725BADB3F0064FAB6 /* IAMessageHelper.swift */,
-				A9B54E2425BC1B5D00701541 /* IANotifyView.swift */,
+				A9D021D325C6BA9C005101B5 /* UI */,
+				A9D021D425C6BAAD005101B5 /* Model */,
+				A9D021D625C6BAB9005101B5 /* Util */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -111,6 +109,32 @@
 				A9B54E3325BD888A00701541 /* TopBottomAnimator.swift */,
 			);
 			path = Animator;
+			sourceTree = "<group>";
+		};
+		A9D021D325C6BA9C005101B5 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A9A757EE25BAD20F00B62469 /* IANotifyWindow.swift */,
+				A9A757DE25BA867900B62469 /* IANotifyViewController.swift */,
+				A9B54E2425BC1B5D00701541 /* IANotifyView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A9D021D425C6BAAD005101B5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A9A757E125BA899800B62469 /* IAMessage.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A9D021D625C6BAB9005101B5 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				A9B5C9C725BADB3F0064FAB6 /* IAMessageHelper.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
