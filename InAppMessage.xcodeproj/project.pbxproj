@@ -22,6 +22,7 @@
 		A9B54E3025BD7D3200701541 /* IAAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B54E2F25BD7D3200701541 /* IAAnimator.swift */; };
 		A9B54E3425BD888A00701541 /* TopBottomAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B54E3325BD888A00701541 /* TopBottomAnimator.swift */; };
 		A9B5C9C825BADB3F0064FAB6 /* IAMessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5C9C725BADB3F0064FAB6 /* IAMessageHelper.swift */; };
+		A9D021D025C3ECFB005101B5 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D021CF25C3ECFB005101B5 /* NextViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		A9B54E2F25BD7D3200701541 /* IAAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAAnimator.swift; sourceTree = "<group>"; };
 		A9B54E3325BD888A00701541 /* TopBottomAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomAnimator.swift; sourceTree = "<group>"; };
 		A9B5C9C725BADB3F0064FAB6 /* IAMessageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAMessageHelper.swift; sourceTree = "<group>"; };
+		A9D021CF25C3ECFB005101B5 /* NextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +79,9 @@
 				A9A757C425BA84A500B62469 /* AppDelegate.swift */,
 				A9A757C625BA84A500B62469 /* SceneDelegate.swift */,
 				A9A757C825BA84A500B62469 /* ViewController.swift */,
-				A9A757DC25BA852600B62469 /* Core */,
+				A9D021CF25C3ECFB005101B5 /* NextViewController.swift */,
 				A9A757CA25BA84A500B62469 /* Main.storyboard */,
+				A9A757DC25BA852600B62469 /* Core */,
 				A9A757CD25BA84A700B62469 /* Assets.xcassets */,
 				A9A757CF25BA84A700B62469 /* LaunchScreen.storyboard */,
 				A9A757D225BA84A700B62469 /* Info.plist */,
@@ -186,6 +189,7 @@
 				A9A757DA25BA851A00B62469 /* IAMessageService.swift in Sources */,
 				A9A757EF25BAD20F00B62469 /* IANotifyWindow.swift in Sources */,
 				A9A757E225BA899800B62469 /* IAMessage.swift in Sources */,
+				A9D021D025C3ECFB005101B5 /* NextViewController.swift in Sources */,
 				A9A757C525BA84A500B62469 /* AppDelegate.swift in Sources */,
 				A9B54E2C25BD78E600701541 /* IAMessagePresenter.swift in Sources */,
 				A9B54E2525BC1B5D00701541 /* IANotifyView.swift in Sources */,

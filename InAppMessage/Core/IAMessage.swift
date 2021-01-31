@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: - IAMessage
 public struct IAMessage {
     var title: String
     var body: String?
@@ -17,12 +18,16 @@ public struct IAMessage {
 
 
 // MARK: - IAMessageView
-public typealias IAMessageClickHandler = (_ message: IAMessage) -> ()
+public typealias IAMessageClickHandler = (_ message: IAMessage?) -> ()
+
 public protocol IAMessageView where Self: UIView {
+    var interactiveView: UIView? { get }
+    
     func setMessage(_ message: IAMessage)
-    func clickMessage(_ handler: IAMessageClickHandler)
+    func clickMessage(_ handler: @escaping IAMessageClickHandler)
 }
 
+// MARK: - IAMessageContext
 public class IAMessageContext: NSObject {
     public let container: UIView
     public let messageView: IAMessageView
@@ -31,6 +36,10 @@ public class IAMessageContext: NSObject {
         self.container = container
         self.messageView = messageView
         super.init()
+    }
+    
+    deinit {
+        print("IAMessageContext deinit")
     }
 }
 
@@ -41,6 +50,8 @@ struct IAMessageConfig {
     var presentStyle: IANotifyPresentStyle = .top
     
     var duration: MessageDuration = .auto
+    
+    var interactiveHidden: Bool = true
 }
 
 public enum IANotifyPresentStyle {

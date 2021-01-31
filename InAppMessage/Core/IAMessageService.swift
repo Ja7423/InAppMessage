@@ -13,7 +13,6 @@ class IAMessageService: NSObject {
     
     private lazy var notifyViewController = IANotifyViewController()
     private var currentPresenter: IAMessagePresenter?
-    private var hiddenPresenter: IAMessagePresenter?
     
     static func show(_ view: IAMessageView, config: IAMessageConfig) {
         shared.show(view, config: config)
@@ -24,18 +23,17 @@ class IAMessageService: NSObject {
     }
     
     private func show(_ view: IAMessageView, config: IAMessageConfig) {
+        hide()
+        
         let presenter = IAMessagePresenter(config: config)
         presenter.delegate = self
-        
-        hiddenPresenter = currentPresenter
-        currentPresenter = presenter
-        
-        hide()
         presenter.show(view: view)
+        
+        currentPresenter = presenter
     }
     
     private func hide() {
-        guard let presenter = hiddenPresenter else { return }
+        guard let presenter = currentPresenter else { return }
         presenter.hide()
     }
 }
@@ -50,16 +48,14 @@ extension IAMessageService: PresenterEventDelegate {
         
     }
     
-    func willHide(_ presenter: IAMessagePresenter) {
+    func willHidden(_ presenter: IAMessagePresenter) {
         
     }
     
-    func didHide(_ presenter: IAMessagePresenter) {
+    func didHidden(_ presenter: IAMessagePresenter) {
         if currentPresenter === presenter {
             currentPresenter = nil
         }
-        
-        hiddenPresenter = nil
     }
 }
 

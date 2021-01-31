@@ -50,7 +50,7 @@ class IANotifyView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.textColor = .black
         return label
@@ -65,8 +65,20 @@ class IANotifyView: UIView {
         return label
     }()
     
+    private lazy var clickButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(toggleButton(_:)), for: .touchUpInside)
+        return btn
+    }()
+    
+    private var message: IAMessage?
+    private var messageHandler: IAMessageClickHandler?
+    
     deinit {
         print("IANotifyView deinit")
+        messageHandler = nil
     }
     
     override init(frame: CGRect) {
@@ -87,6 +99,7 @@ class IANotifyView: UIView {
         backgroundView.addSubview(iconImageView)
         backgroundView.addSubview(titleLabel)
         backgroundView.addSubview(bodyLabel)
+        addSubview(clickButton)
         
         installConstraint()
     }
@@ -142,12 +155,33 @@ class IANotifyView: UIView {
                                             constant: 0).isActive = true
         bodyLabel.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor,
                                           constant: Margin.contentRight).isActive = true
+        
+        clickButton.topAnchor.constraint(equalTo: self.topAnchor,
+                                    constant: Margin.backgroundtopBottom).isActive = true
+        clickButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,
+                                        constant: Margin.backgroundLeftRight).isActive = true
+        clickButton.trailingAnchor.constraint(equalTo: self.trailingAnchor,
+                                         constant: -Margin.backgroundLeftRight).isActive = true
+        clickButton.bottomAnchor.constraint(equalTo: self.bottomAnchor,
+                                       constant: Margin.backgroundtopBottom).isActive = true
+    }
+    
+    @objc private func toggleButton(_ sender: UIButton) {
+        messageHandler?(message)
     }
 }
 
+// MARK: - IAMessageView
 extension IANotifyView: IAMessageView {
+    var interactiveView: UIView? {
+        get {
+            clickButton
+        }
+    }
     
     func setMessage(_ message: IAMessage) {
+        self.message = message
+        
         titleLabel.text = message.title
         titleLabel.sizeToFit()
         
@@ -159,7 +193,7 @@ extension IANotifyView: IAMessageView {
         setNeedsLayout()
     }
     
-    func clickMessage(_ handler: (IAMessage) -> ()) {
-        
+    func clickMessage(_ handler: @escaping IAMessageClickHandler) {
+        messageHandler = handler
     }
 }
