@@ -16,9 +16,8 @@ public struct IAMessage {
     var userInfo: [String: Any]?
 }
 
-
 // MARK: - IAMessageView
-public typealias IAMessageClickHandler = (_ message: IAMessage?) -> ()
+public typealias IAMessageClickHandler = (_ message: IAMessage?) -> Void
 
 public protocol IAMessageView where Self: UIView {
     var interactiveView: UIView? { get }
@@ -42,7 +41,6 @@ public class IAMessageContext: NSObject {
         print("IAMessageContext deinit")
     }
 }
-
 
 // MARK: - IAMessageConfig
 struct IAMessageConfig {

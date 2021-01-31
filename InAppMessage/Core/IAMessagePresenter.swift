@@ -23,15 +23,13 @@ class IAMessagePresenter: NSObject {
     let animator: IAAnimator
     
     private var messageTime: TimeInterval {
-        get {
-            switch config.duration {
-            case .auto:
-                return 5.0
-            case .forever:
-                return 0
-            case .seconds(let seconds):
-                return seconds
-            }
+        switch config.duration {
+        case .auto:
+            return 5.0
+        case .forever:
+            return 0
+        case .seconds(let seconds):
+            return seconds
         }
     }
     
@@ -104,7 +102,7 @@ class IAMessagePresenter: NSObject {
     @objc func hide() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
-        guard let _ = presentationContext else { return }
+        guard presentationContext != nil else { return }
         
         // will hide
         delegate?.willHidden(self)
@@ -127,8 +125,7 @@ extension IAMessagePresenter: IAAnimatorDelegate {
     func animation(_ animator: IAAnimator, shouldHidden: Bool) {
         if shouldHidden {
             hide()
-        }
-        else {
+        } else {
             showPresentationContext()
         }
     }

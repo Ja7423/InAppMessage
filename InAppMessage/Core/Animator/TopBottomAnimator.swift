@@ -17,15 +17,13 @@ class TopBottomAnimator: NSObject, IAAnimator {
     
     /// 保留message的時間
     private var messageTime: TimeInterval {
-        get {
-            switch config.duration {
-            case .auto:
-                return 5.0
-            case .forever:
-                return 0
-            case .seconds(let seconds):
-                return seconds
-            }
+        switch config.duration {
+        case .auto:
+            return 5.0
+        case .forever:
+            return 0
+        case .seconds(let seconds):
+            return seconds
         }
     }
     
@@ -43,19 +41,17 @@ class TopBottomAnimator: NSObject, IAAnimator {
     
     /// frame 的 Y 座標
     private var originY: CGFloat {
-        get {
-            switch config.presentStyle {
-            case .top:
-                return UIApplication.shared.safeAreaInsets.top + 8
-            case .bottom:
-                if let context = context {
-                    return context.container.frame.height - context.messageView.frame.height - UIApplication.shared.safeAreaInsets.bottom - 8
-                }
-            default: break
+        switch config.presentStyle {
+        case .top:
+            return UIApplication.shared.safeAreaInsets.top + 8
+        case .bottom:
+            if let context = context {
+                return context.container.frame.height - context.messageView.frame.height - UIApplication.shared.safeAreaInsets.bottom - 8
             }
-            
-            return -1
+        default: break
         }
+        
+        return -1
     }
     
     private lazy var pangesture: UIPanGestureRecognizer = {
@@ -109,7 +105,7 @@ class TopBottomAnimator: NSObject, IAAnimator {
                         strongSelf.hideMessageContext(context: context)
                         
                        },
-                       completion:{
+                       completion: {
                         messageView.removeFromSuperview()
                         completion($0)
                        })
@@ -128,13 +124,13 @@ class TopBottomAnimator: NSObject, IAAnimator {
         
         switch config.presentStyle {
         case .top:
-            let y = messageView.frame.size.height + UIApplication.shared.safeAreaInsets.top
+            let translationY = messageView.frame.size.height + UIApplication.shared.safeAreaInsets.top
             messageView.transform = CGAffineTransform(translationX: 0,
-                                                      y: -y)
+                                                      y: -translationY)
         case .bottom:
-            let y =  messageView.frame.height + UIApplication.shared.safeAreaInsets.bottom
+            let translationY =  messageView.frame.height + UIApplication.shared.safeAreaInsets.bottom
             messageView.transform = CGAffineTransform(translationX: 0,
-                                                      y: y)
+                                                      y: translationY)
         default: break
         }
     }
@@ -179,14 +175,12 @@ class TopBottomAnimator: NSObject, IAAnimator {
             let translationY = max(nextTranslationY, 0)
             self.translationY = translationY
             messageView.transform = CGAffineTransform(translationX: 0, y: -self.translationY)
-            break
         case .bottom:
             let lastTranslationY = translationPoint.y
             let nextTranslationY = self.translationY + lastTranslationY
             let translationY = max(nextTranslationY, 0)
             self.translationY = translationY
             messageView.transform = CGAffineTransform(translationX: 0, y: self.translationY)
-            break
         default: break
         }
         
@@ -205,23 +199,19 @@ class TopBottomAnimator: NSObject, IAAnimator {
             if lastSpeed >= minCloseSpeed || translationY > translationForHidden {
                 // hide
                 delegate?.animation(self, shouldHidden: true)
-            }
-            else {
+            } else {
                 // show
                 delegate?.animation(self, shouldHidden: false)
             }
-            break
         case .bottom:
             let lastSpeed = closeSpeed
             if lastSpeed >= minCloseSpeed || translationY > translationForHidden {
                 // hide
                 delegate?.animation(self, shouldHidden: true)
-            }
-            else {
+            } else {
                 // show
                 delegate?.animation(self, shouldHidden: false)
             }
-            break
         default: break
         }
         

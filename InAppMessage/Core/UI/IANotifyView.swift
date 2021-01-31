@@ -114,7 +114,6 @@ class IANotifyView: UIView {
     }
     
     private func installConstraint() {
-        
         backgroundView.topAnchor.constraint(equalTo: self.topAnchor,
                                             constant: Margin.backgroundtopBottom).isActive = true
         backgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor,
@@ -174,9 +173,7 @@ class IANotifyView: UIView {
 // MARK: - IAMessageView
 extension IANotifyView: IAMessageView {
     var interactiveView: UIView? {
-        get {
-            clickButton
-        }
+        return clickButton
     }
     
     func setMessage(_ message: IAMessage) {
