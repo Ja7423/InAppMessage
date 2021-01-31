@@ -46,10 +46,10 @@ class TopBottomAnimator: NSObject, IAAnimator {
         get {
             switch config.presentStyle {
             case .top:
-                return UIApplication.shared.safeAreaInsets.top
+                return UIApplication.shared.safeAreaInsets.top + 8
             case .bottom:
                 if let context = context {
-                    return context.container.frame.height - context.messageView.frame.height - UIApplication.shared.safeAreaInsets.bottom
+                    return context.container.frame.height - context.messageView.frame.height - UIApplication.shared.safeAreaInsets.bottom - 8
                 }
             default: break
             }
