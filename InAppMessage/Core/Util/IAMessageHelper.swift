@@ -13,7 +13,8 @@ extension UIApplication {
         var activeWindow: UIWindow?
         for window in windows {
             if let windowScene = window.windowScene,
-               windowScene.activationState == .foregroundActive {
+               windowScene.activationState == .foregroundActive,
+               window.isKeyWindow {
                 activeWindow = window
                 break
             }

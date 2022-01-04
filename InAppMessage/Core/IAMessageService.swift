@@ -11,7 +11,6 @@ class IAMessageService: NSObject {
     
     static let shared = IAMessageService()
     
-    private lazy var notifyViewController = IANotifyViewController()
     private var currentPresenter: IAMessagePresenter?
     
     static func show(_ view: IAMessageView, config: IAMessageConfig) {
