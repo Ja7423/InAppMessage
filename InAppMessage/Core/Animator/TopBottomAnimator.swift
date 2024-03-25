@@ -83,7 +83,7 @@ class TopBottomAnimator: NSObject, IAAnimator {
     }
 
     func show(completion: @escaping AnimationCompletion) {
-        guard let context = context else { return }
+        guard let context else { return }
 
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
@@ -94,7 +94,7 @@ class TopBottomAnimator: NSObject, IAAnimator {
     }
 
     func hide(completion: @escaping AnimationCompletion) {
-        guard let context = context else { return }
+        guard let context else { return }
 
         let messageView = context.messageView
         UIView.animate(withDuration: animationDuration,

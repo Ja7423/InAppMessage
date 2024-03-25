@@ -15,8 +15,8 @@ class IANotifyWindow: UIWindow {
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard let view = notificationView else { return false }
-        let touchPoint = convert(point, to: view)
-        return view.point(inside: touchPoint, with: event)
+        guard let notificationView else { return false }
+        let touchPoint = convert(point, to: notificationView)
+        return notificationView.point(inside: touchPoint, with: event)
     }
 }

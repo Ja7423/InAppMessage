@@ -54,9 +54,9 @@ class IANotifyViewController: UIViewController {
     }
 
     public func show(context: IAMessageContext) {
-        guard let notifyWindow = iaNotifyWindow else { return }
-        notifyWindow.isHidden = false
-        notifyWindow.notificationView = context.messageView
+        guard let iaNotifyWindow else { return }
+        iaNotifyWindow.isHidden = false
+        iaNotifyWindow.notificationView = context.messageView
     }
 
     public func destory() {

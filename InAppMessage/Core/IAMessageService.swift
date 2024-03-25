@@ -31,8 +31,8 @@ class IAMessageService: NSObject {
     }
 
     private func hide() {
-        guard let presenter = currentPresenter else { return }
-        presenter.hide()
+        guard let currentPresenter else { return }
+        currentPresenter.hide()
     }
 }
 

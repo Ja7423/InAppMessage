@@ -74,26 +74,26 @@ class IAMessagePresenter: NSObject {
     private func showPresentationContext() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
 
-        guard let context = presentationContext else { return }
+        guard let presentationContext else { return }
 
         // show window
-        notifyViewController.show(context: context)
+        notifyViewController.show(context: presentationContext)
 
         // will show
         delegate?.willShow(self)
 
         animator.show { [weak self] completed in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             guard completed == true else { return }
 
             // did show
-            strongSelf.delegate?.didShow(strongSelf)
+            self.delegate?.didShow(self)
 
             // hide
-            if strongSelf.messageTime > 0 {
-                strongSelf.perform(#selector(strongSelf.hide),
-                                   with: nil,
-                                   afterDelay: strongSelf.messageTime)
+            if self.messageTime > 0 {
+                self.perform(#selector(self.hide),
+                             with: nil,
+                             afterDelay: self.messageTime)
             }
         }
     }
@@ -107,14 +107,14 @@ class IAMessagePresenter: NSObject {
         delegate?.willHidden(self)
 
         animator.hide { [weak self] completed in
-            guard let strongSelf = self else { return }
+            guard let self else { return }
             guard completed == true else { return }
 
             // release viewController and window
-            strongSelf.notifyViewController.destory()
+            self.notifyViewController.destory()
 
             // did hide
-            strongSelf.delegate?.didHidden(strongSelf)
+            self.delegate?.didHidden(self)
         }
     }
 }
