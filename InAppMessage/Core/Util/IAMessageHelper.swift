@@ -14,15 +14,16 @@ extension UIApplication {
         for window in windows {
             if let windowScene = window.windowScene,
                windowScene.activationState == .foregroundActive,
-               window.isKeyWindow {
+               window.isKeyWindow
+            {
                 activeWindow = window
                 break
             }
         }
-        
+
         return activeWindow
     }
-    
+
     var safeAreaInsets: UIEdgeInsets {
         return activeWindow?.safeAreaInsets ?? .zero
     }

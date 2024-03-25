@@ -9,12 +9,11 @@ import Foundation
 import UIKit
 
 class TopBottomAnimator: NSObject, IAAnimator {
-    
     weak var delegate: IAAnimatorDelegate?
-    
+
     private let config: IAMessageConfig
     private let animationDuration: TimeInterval = 0.5
-    
+
     /// 保留message的時間
     private var messageTime: TimeInterval {
         switch config.duration {
@@ -22,23 +21,23 @@ class TopBottomAnimator: NSObject, IAAnimator {
             return 5.0
         case .forever:
             return 0
-        case .seconds(let seconds):
+        case let .seconds(seconds):
             return seconds
         }
     }
-    
+
     /// 最低要隱藏messageView的拖移範圍
     private let hiddenPercent: CGFloat = 0.4
-    
+
     /// 最低要隱藏messageView的拖移速度
     private let minCloseSpeed: CGFloat = 250.0
-    
+
     /// 拖移速度
     private var closeSpeed: CGFloat = 0.0
-    
+
     /// 拖移的Y座標
     private var translationY: CGFloat = 0.0
-    
+
     /// frame 的 Y 座標
     private var originY: CGFloat {
         switch config.presentStyle {
@@ -50,67 +49,67 @@ class TopBottomAnimator: NSObject, IAAnimator {
             }
         default: break
         }
-        
+
         return -1
     }
-    
+
     private lazy var pangesture: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         return gesture
     }()
+
     private weak var context: IAMessageContext?
-    
+
     deinit {
         print("TopBottomAnimator deinit")
         removePanGesture()
     }
-    
+
     init(config: IAMessageConfig) {
         self.config = config
         super.init()
     }
-    
+
     func addContext(context: IAMessageContext) {
         self.context = context
-        
+
         layoutMessage(context: context)
         hideMessageContext(context: context)
-        
+
         // add gesture
         if config.interactiveHidden, let interactiveView = context.messageView.interactiveView {
             addPanGesture(on: interactiveView)
         }
     }
-    
+
     func show(completion: @escaping AnimationCompletion) {
-        guard let context = self.context else { return }
-        
+        guard let context = context else { return }
+
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
                        options: .curveEaseOut,
                        animations: {
-                        
-                        context.messageView.transform = .identity
+                           context.messageView.transform = .identity
                        }, completion: completion)
     }
-    
+
     func hide(completion: @escaping AnimationCompletion) {
-        guard let context = self.context else { return }
-        
+        guard let context = context else { return }
+
         let messageView = context.messageView
         UIView.animate(withDuration: animationDuration,
                        animations: { [weak self] in
-                        
-                        guard let strongSelf = self else { return }
-                        strongSelf.hideMessageContext(context: context)
-                        
+
+                           guard let self else { return }
+                           self.hideMessageContext(context: context)
+
                        },
                        completion: {
-                        messageView.removeFromSuperview()
-                        completion($0)
+                           messageView.removeFromSuperview()
+                           completion($0)
                        })
     }
-    
+
     private func layoutMessage(context: IAMessageContext) {
         let container = context.container
         let messageView = context.messageView
@@ -118,35 +117,36 @@ class TopBottomAnimator: NSObject, IAAnimator {
         messageView.frame = CGRect(origin: .zero, size: messageView.sizeThatFits(container.bounds.size))
         messageView.frame.origin.y = originY
     }
-    
+
     private func hideMessageContext(context: IAMessageContext) {
         let messageView = context.messageView
-        
+
         switch config.presentStyle {
         case .top:
             let translationY = messageView.frame.size.height + UIApplication.shared.safeAreaInsets.top
             messageView.transform = CGAffineTransform(translationX: 0,
                                                       y: -translationY)
         case .bottom:
-            let translationY =  messageView.frame.height + UIApplication.shared.safeAreaInsets.bottom
+            let translationY = messageView.frame.height + UIApplication.shared.safeAreaInsets.bottom
             messageView.transform = CGAffineTransform(translationX: 0,
                                                       y: translationY)
         default: break
         }
     }
-    
+
     // MARK: Gesture
+
     private func addPanGesture(on view: UIView) {
         pangesture.cancelsTouchesInView = true
         view.addGestureRecognizer(pangesture)
     }
-    
+
     private func removePanGesture() {
         if let interactiveView = context?.messageView.interactiveView {
             interactiveView.removeGestureRecognizer(pangesture)
         }
     }
-    
+
     @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began:
@@ -157,16 +157,16 @@ class TopBottomAnimator: NSObject, IAAnimator {
             handlePanEnd(gesture)
         default: break
         }
-        
+
         gesture.setTranslation(.zero, in: context?.messageView)
     }
-    
+
     private func handlePanChanged(_ gesture: UIPanGestureRecognizer) {
         guard let messageView = context?.messageView else { return }
-        
+
         let translationPoint = gesture.translation(in: messageView)
         let velocity = gesture.velocity(in: messageView)
-        
+
         // 負往上，正往下
         switch config.presentStyle {
         case .top:
@@ -183,14 +183,14 @@ class TopBottomAnimator: NSObject, IAAnimator {
             messageView.transform = CGAffineTransform(translationX: 0, y: self.translationY)
         default: break
         }
-        
+
         closeSpeed = velocity.y
     }
-    
+
     private func handlePanEnd(_ gesture: UIPanGestureRecognizer) {
         let view = gesture.view
         let translationForHidden = (view?.frame.size.height ?? 0) * hiddenPercent
-        
+
         // 消失部分超過hiddenPercent或者拖動速度過快
         // 負往上，正往下
         switch config.presentStyle {
@@ -214,7 +214,7 @@ class TopBottomAnimator: NSObject, IAAnimator {
             }
         default: break
         }
-        
+
         closeSpeed = 0.0
         translationY = 0.0
     }

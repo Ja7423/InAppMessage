@@ -8,16 +8,15 @@
 import UIKit
 
 class IANotifyWindow: UIWindow {
-
     public weak var notificationView: IAMessageView?
-    
+
     deinit {
         print("IANotifyWindow deinit")
     }
-    
+
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         guard let view = notificationView else { return false }
-        let touchPoint = self.convert(point, to: view)
+        let touchPoint = convert(point, to: view)
         return view.point(inside: touchPoint, with: event)
     }
 }

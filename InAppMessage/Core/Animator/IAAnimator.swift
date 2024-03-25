@@ -15,12 +15,11 @@ public protocol IAAnimatorDelegate: AnyObject {
 public typealias AnimationCompletion = (_ completed: Bool) -> Void
 
 public protocol IAAnimator: AnyObject {
-    
     var delegate: IAAnimatorDelegate? { get set }
-    
+
     func addContext(context: IAMessageContext)
-    
+
     func show(completion: @escaping AnimationCompletion)
-    
+
     func hide(completion: @escaping AnimationCompletion)
 }
